@@ -56,46 +56,6 @@ async function register() {
 
 }
 
-// export default {
-//   name: "Register",
-//   data() {
-//     return {
-//       name: "",
-//       email: "",
-//       password: "",
-//       message: "",
-//     };
-//   },
-//   methods: {
-//     async registerUser() {
-//       try {
-//         const response = await fetch("http://localhost:8080/api/register", {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify({
-//             name: this.name,
-//             email: this.email,
-//             password: this.password,
-//           }),
-//         });
-
-//         const data = await response.json();
-
-//         if (!response.ok) {
-//           this.message = data.message || "Error during registration";
-//         } else {
-//           this.message = "Registered successfully! Your token: " + data.token;
-//           console.log(data);
-//         }
-//       } catch (error) {
-//         console.error(error);
-//         this.message = "Network error!";
-//       }
-//     },
-//   },
-// };
 </script>
 
 <style scoped>
