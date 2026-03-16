@@ -6,7 +6,7 @@ use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class QuestionController
+class QuestionController extends Controller
 {
     public function index()
     {
@@ -15,20 +15,22 @@ class QuestionController
 
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required'
+        ]);
+
         $question = Question::create([
             'title' => $request->title,
             'content' => $request->content,
-            'user_id' =>Auth::user()->id
+            'user_id' => Auth::user()->id
         ]);
 
         return response()->json($question);
     }
 
 
-    public function show(string $id)
-    {
-
-    }
+    public function show(string $id) {}
 
     /**
      * Update the specified resource in storage.

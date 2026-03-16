@@ -13,7 +13,8 @@
 </form>
 
 </template>
-<script setup >
+
+<script setup>
 import { ref } from 'vue'
 
 const email = ref('')
@@ -24,21 +25,32 @@ async function login() {
   try {
     const res = await fetch('http://localhost:8080/api/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.value, password: password.value })
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value
+      })
     })
 
     const data = await res.json()
 
     if (!res.ok) {
-      message.value = 'Login failed'
+      message.value = data.message || 'Login failed'
     } else {
-      message.value = 'Logged in! Token: ' + data.token
-      console.log(data)
+
+      // ⭐ المهم
+      localStorage.setItem("token", data.token)
+
+      message.value = 'Login successful'
+      console.log("Token:", data.token)
 
     }
+
   } catch (err) {
-    message.value = 'password or email is incorrect';
+    message.value = 'Password or email is incorrect'
   }
 }
 </script>
