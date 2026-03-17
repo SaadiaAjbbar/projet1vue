@@ -1,25 +1,46 @@
 <template>
+  <div class="flex min-h-[50vh] items-center justify-center p-4">
+    <div class="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-8 shadow-lg">
+      <h2 class="mb-6 text-2xl font-bold text-slate-900">Welcome Back</h2>
 
-<form @submit.prevent="login">
+      <form @submit.prevent="login" class="space-y-4">
+        <input
+          v-model="email"
+          type="email"
+          placeholder="Email Address"
+          required
+          class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+        />
 
-<input v-model="email" placeholder="Email" />
+        <input
+          v-model="password"
+          type="password"
+          placeholder="Password"
+          required
+          class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+        />
 
-<input v-model="password" type="password" placeholder="Password" />
+        <button
+          type="submit"
+          class="w-full rounded-lg bg-blue-600 py-2 font-semibold text-white transition hover:bg-blue-700"
+        >
+          Login
+        </button>
+      </form>
 
-<button type="submit">Login</button>
-
-<p>{{ message }}</p>
-
-</form>
-
+      <p v-if="message" class="mt-4 text-center text-sm text-red-600">{{ message }}</p>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const email = ref('')
 const password = ref('')
 const message = ref('')
+const router = useRouter() // Import router to move user after login
 
 async function login() {
   try {
@@ -40,17 +61,14 @@ async function login() {
     if (!res.ok) {
       message.value = data.message || 'Login failed'
     } else {
-
-      // ⭐ المهم
+      // 1. Save Token
       localStorage.setItem("token", data.token)
 
-      message.value = 'Login successful'
-      console.log("Token:", data.token)
-
+      // 2. Redirect to home page
+      router.push('/')
     }
-
   } catch (err) {
-    message.value = 'Password or email is incorrect'
+    message.value = 'Server error. Please try again later.'
   }
 }
 </script>
