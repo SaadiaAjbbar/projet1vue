@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CreateQuestion from '../views/CreateQuestion.vue'
 import ListQuestions from '../views/ListQuestions.vue'
+import favorites from '../views/favorites.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -38,7 +39,13 @@ const router = createRouter({
       path: '/ListQuestions',
       name: 'ListQuestions',
       component: ListQuestions
-    }
+    },
+    {
+      path: '/favorites',
+      name: 'favorites',
+      component: favorites
+    },
+
   ],
 })
 

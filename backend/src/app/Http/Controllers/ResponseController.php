@@ -21,6 +21,10 @@ class ResponseController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'content' => 'required',
+            'question_id' => 'required|exists:questions,id'
+        ]);
         $response = Response::create([
             'content' => $request->content,
             'question_id' => $request->question_id,
@@ -33,10 +37,7 @@ class ResponseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-
-    }
+    public function show(string $id) {}
 
     /**
      * Update the specified resource in storage.
@@ -44,7 +45,13 @@ class ResponseController extends Controller
     public function update(Request $request, string $id)
     {
         $response = Response::findOrFail($id);
+
+        if ($response->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         $response->update($request->all());
+
         return response()->json($response);
     }
 
@@ -54,7 +61,13 @@ class ResponseController extends Controller
     public function destroy(string $id)
     {
         $response = Response::findOrFail($id);
+
+        if ($response->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         $response->delete();
-        return response()->json(['message' => 'Response deleted successfully']);
+
+        return response()->json(['message' => 'Deleted']);
     }
 }

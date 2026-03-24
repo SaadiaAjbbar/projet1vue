@@ -10,7 +10,12 @@ class QuestionController extends Controller
 {
     public function index()
     {
-        return Question::with('user')->latest()->get();
+        return Question::with(['user', 'responses' => function ($q) {
+            $q->with('user');
+        }, 'favorites'=> function ($q) {
+            $q->where('user_id', Auth::id());
+        }
+        ])->latest()->get();
     }
 
     public function store(Request $request)
@@ -38,7 +43,13 @@ class QuestionController extends Controller
     public function update(Request $request, string $id)
     {
         $question = Question::findOrFail($id);
+
+        if ($question->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         $question->update($request->all());
+
         return response()->json($question);
     }
 
@@ -48,7 +59,13 @@ class QuestionController extends Controller
     public function destroy(string $id)
     {
         $question = Question::findOrFail($id);
+
+        if ($question->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         $question->delete();
-        return response()->json(['message' => 'Question deleted successfully']);
+
+        return response()->json(['message' => 'Deleted']);
     }
 }

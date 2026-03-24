@@ -40,7 +40,7 @@ import { useRouter } from 'vue-router'
 const email = ref('')
 const password = ref('')
 const message = ref('')
-const router = useRouter() // Import router to move user after login
+const router = useRouter()
 
 async function login() {
   try {
@@ -63,6 +63,7 @@ async function login() {
     } else {
       // 1. Save Token
       localStorage.setItem("token", data.token)
+      localStorage.setItem("user", JSON.stringify(data.user))
 
       // 2. Redirect to home page
       router.push('/')

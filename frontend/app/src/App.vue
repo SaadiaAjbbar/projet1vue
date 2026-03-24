@@ -60,7 +60,7 @@ import { RouterLink, RouterView } from 'vue-router'
     </div>
 
     <footer class="mt-auto border-t bg-white py-10 text-center text-sm text-slate-500">
-      <p>&copy; 2026 DevQuery Project. Built with Vue & Tailwind.</p>
+      <p>&copy; 2026 LocalMind Project. Built with Vue & Tailwind.</p>
     </footer>
   </div>
 </template>
